@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 
 public class DMGInfo {
 
@@ -143,17 +142,18 @@ public class DMGInfo {
     }
 }
 
+//XXX Is there a point to this class?
 class DMGInfoFrame extends JFrame {
 
-    private JTabbedPane mainPane;
+    //private JTabbedPane mainPane;
 
     public DMGInfoFrame() {
         super("DMGInfo");
 
-        mainPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+        //mainPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
 
-        StatisticsPanel statisticsPanel;
-        statisticsPanel = new StatisticsPanel();
+        //StatisticsPanel statisticsPanel;
+        //statisticsPanel = new StatisticsPanel();
     //mainPane.addTab(statisticsPanel, "Statistics");
     }
 }
