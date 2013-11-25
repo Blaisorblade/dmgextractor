@@ -174,9 +174,12 @@ public class UDIFBlock implements Comparable<UDIFBlock>{
     
     @Override
     public String toString() {
+        long outOff = getTrueOutOffset();
+        long inOff = getTrueInOffset();
+
         return getBlockTypeAsString() +
-                "(reserved=0x" + Integer.toHexString(reserved) + ",outOffset=" + outOffset +
-                ",outSize=" + outSize + ",inOffset=" + inOffset + ",inSize=" + inSize + ",outOffsetComp=" + outOffsetComp + ",inOffsetComp=" + inOffsetComp + ")";
+                "(outOffset=" + outOff +
+                ",outSize=" + outSize + ",inOffset=" + inOff + ",inSize=" + inSize + ")";
     }
 
     /**
