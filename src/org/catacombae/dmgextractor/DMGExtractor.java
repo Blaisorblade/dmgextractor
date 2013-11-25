@@ -523,12 +523,16 @@ public class DMGExtractor {
             System.out.printf(
                     "dmsetup create wdc%d -r --addnodeoncreate <<EOF\n",
                     i);
+	    //We need to shift the table to start at zero.
+	    long initialOutOffset = -1;
 
             for (UDIFBlock b : p.getBlocks()) {
                 switch (b.getBlockType()) {
                 case UDIFBlock.BT_COPY:
                 case UDIFBlock.BT_ZERO:
-                    System.out.printf("%s\n", b.toCommands());
+		    if (initialOutOffset == -1)
+			initialOutOffset = b.getTrueOutOffset();
+                    System.out.printf("%s\n", b.toCommands(-initialOutOffset));
                     blocks2.add(b);
                     break;
                 case UDIFBlock.BT_END:

@@ -185,8 +185,11 @@ public class UDIFBlock implements Comparable<UDIFBlock>{
     private final static String device = "@"; //Placeholder for the device ID, to be determined when the table is loaded.
     private final static long sectorSize = 512;
 
-    public String toCommands() {
-        long outOff = getTrueOutOffset();
+    /**
+     * @param outOffset offset added to the output offset.
+     */
+    public String toCommands(long outOffset) {
+        long outOff = getTrueOutOffset() + outOffset;
         long inOff = getTrueInOffset();
 
         String base =
