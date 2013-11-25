@@ -29,7 +29,6 @@ import javax.xml.parsers.SAXParserFactory;
 import org.catacombae.dmgextractor.io.RandomAccessInputStream;
 import org.catacombae.dmgextractor.io.SynchronizedRandomAccessStream;
 import org.catacombae.io.ReadableByteArrayStream;
-import org.catacombae.xml.DebugXMLContentHandler;
 import org.catacombae.xml.NodeBuilder;
 import org.catacombae.xml.NodeBuilderContentHandler;
 import org.catacombae.xml.NullXMLContentHandler;
