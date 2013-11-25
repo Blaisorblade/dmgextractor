@@ -24,9 +24,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Iterator;
 import java.util.Collections;
+import java.util.List;
+
 import javax.swing.JOptionPane;
 import org.catacombae.dmg.encrypted.ReadableCEncryptedEncodingStream;
 import org.catacombae.io.FileStream;
@@ -231,6 +234,28 @@ public class DMGExtractor {
         for (PlistPartition p : partitions) {
             System.out.println(p);
         }
+        List<UDIFBlock> blocks2 = new ArrayList<UDIFBlock>();
+        for (PlistPartition p : partitions) {
+            for (UDIFBlock b : p.getBlocks()) {
+                switch (b.getBlockType()) {
+                case UDIFBlock.BT_COPY:
+                case UDIFBlock.BT_ZERO:
+                    blocks2.add(b);
+                    break;
+                case UDIFBlock.BT_END:
+                    //Do nothing
+                    break;
+                default:
+                    System.out.printf("Warning: skipping block of type %s with data %s\n", b.getBlockTypeAsString(), b.toString());
+                }
+            }
+        }
+        assertSortedOnOutOffset(blocks2);
+        for (UDIFBlock b : blocks2) {
+            System.out.println(b.toCommands());
+        }
+        System.exit(0);
+
 
         long totalOutSize = 0;
         for(PlistPartition p : partitions) {
@@ -505,6 +530,17 @@ public class DMGExtractor {
             }
             dmgRaf.close();
             ui.displayMessage("Done!");
+        }
+    }
+
+    private static void assertSortedOnOutOffset(List<UDIFBlock> blocks) {
+        UDIFBlock prev, curr = null;
+        for (Iterator<UDIFBlock> blocksI = blocks.iterator(); blocksI.hasNext(); ) {
+            prev = curr;
+            curr = blocksI.next();
+            if (prev != null) {
+                assert (prev.getTrueOutOffset() < curr.getTrueOutOffset());
+            }
         }
     }
 

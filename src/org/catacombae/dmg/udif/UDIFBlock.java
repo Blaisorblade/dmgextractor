@@ -182,6 +182,25 @@ public class UDIFBlock implements Comparable<UDIFBlock>{
                 ",outSize=" + outSize + ",inOffset=" + inOff + ",inSize=" + inSize + ")";
     }
 
+    private final static String device = "@"; //Placeholder for the device ID, to be determined when the table is loaded.
+    private final static long sectorSize = 512;
+
+    public String toCommands() {
+        long outOff = getTrueOutOffset();
+        long inOff = getTrueInOffset();
+
+        String base =
+                String.format("%d %d", outOff / sectorSize, outSize / sectorSize);
+        switch (blockType) {
+        case BT_COPY:
+            return String.format("%s linear %s %d", base, device, inOff / sectorSize);
+        case BT_ZERO:
+            return String.format("%s zero", base);
+        default:
+            return base;
+        }
+    }
+
     /**
      * Reads the inOffset field from <code>data</code> at <code>offset</code>
      * which is supposed to be a valid raw UDIF block structure at 40 bytes.
