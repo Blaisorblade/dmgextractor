@@ -236,10 +236,10 @@ public abstract class UDIFBlockInputStream extends InputStream {
             //System.out.println("  bytesToFeed=" + bytesToFeed);
 
             byte[] buf;
-            int bytesToWrite = bytesToFeed;
+            //int bytesToWrite = bytesToFeed;
             if(bytesLeftToRead <= inBuffer.length) {
                 buf = new byte[inBuffer.length + 1];
-                bytesToWrite++;
+                //bytesToWrite++;
             }
             else
                 buf = inBuffer;

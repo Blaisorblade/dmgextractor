@@ -16,7 +16,8 @@ public class Dump {
         ReadableSparseBundleStream stream =
                 new ReadableSparseBundleStream(new File(args[0]));
         byte[] buf = new byte[512*1024];
-        long bytesRead = 0;
+        //XXX what's the point of this code?
+        //long bytesRead = 0;
 
         while(true) {
             int curBytesRead = stream.read(buf);
@@ -26,7 +27,7 @@ public class Dump {
                 throw new RuntimeException("Wtf... curBytesRead=" +
                         curBytesRead);
 
-            bytesRead += curBytesRead;
+            //bytesRead += curBytesRead;
 
             System.out.write(buf, 0, curBytesRead);
         }
