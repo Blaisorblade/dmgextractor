@@ -89,18 +89,18 @@ public class DMGExtractor {
             else
                 ui = new TextModeUI(ses.verbose);
 
-            //ui.displayMessage(COPYRIGHT_MESSAGE);
+            ui.displayMessage(COPYRIGHT_MESSAGE);
             if(ses.parseArgsErrorMessage == null) {
                 if(ses.graphical) {
                     if(ses.dmgFile == null) {
                         ses.dmgFile = ui.getInputFileFromUser();
                     }
                     if(ses.dmgFile != null && ses.isoFile == null) {
-                        /*if(ui.getOutputConfirmationFromUser()) {
+                        if(ui.getOutputConfirmationFromUser()) {
                             ses.isoFile = ui.getOutputFileFromUser(ses.dmgFile);
                             if(ses.isoFile == null)
                                 System.exit(0);
-                        }*/
+                        }
                     }
                 }
 
