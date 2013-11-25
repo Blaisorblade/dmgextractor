@@ -177,12 +177,19 @@ public class PlistPartition {
         
     @Override
     public String toString() {
+        StringBuffer blockListToString = new StringBuffer();
+        for (UDIFBlock b: Arrays.asList(Arrays.copyOf(blockList, blockList.length - 1))) {
+            blockListToString.append(b).append(",\n");
+        }
+        blockListToString.append(blockList[blockList.length - 1]);
         return "PlistPartition [name=" + name + ", id=" + id + ", attributes="
-                + attributes + ", blockList=" + Arrays.toString(blockList)
+                + attributes
                 + ", partitionSize=" + partitionSize + ", previousOutOffset="
                 + previousOutOffset + ", previousInOffset=" + previousInOffset
                 + ", finalOutOffset=" + finalOutOffset + ", finalInOffset="
-                + finalInOffset + "]";
+                + finalInOffset
+                + ", blockList={\n" + blockListToString
+                + "\n}]";
     }
 
     public static long calculatePartitionSize(UDIFBlock[] data) throws IOException {
