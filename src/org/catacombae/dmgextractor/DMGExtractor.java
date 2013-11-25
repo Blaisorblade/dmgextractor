@@ -230,32 +230,7 @@ public class DMGExtractor {
         Plist plist = new Plist(buffer, ses.useSaxParser);
         PlistPartition[] partitions = plist.getPartitions();
 
-        //XXX temporary. I am interested in extracting this information, but this should be a separate functionality.
-        for (PlistPartition p : partitions) {
-            System.out.println(p);
-        }
-        List<UDIFBlock> blocks2 = new ArrayList<UDIFBlock>();
-        for (PlistPartition p : partitions) {
-            for (UDIFBlock b : p.getBlocks()) {
-                switch (b.getBlockType()) {
-                case UDIFBlock.BT_COPY:
-                case UDIFBlock.BT_ZERO:
-                    blocks2.add(b);
-                    break;
-                case UDIFBlock.BT_END:
-                    //Do nothing
-                    break;
-                default:
-                    System.out.printf("Warning: skipping block of type %s with data %s\n", b.getBlockTypeAsString(), b.toString());
-                }
-            }
-        }
-        assertSortedOnOutOffset(blocks2);
-        for (UDIFBlock b : blocks2) {
-            System.out.println(b.toCommands());
-        }
-        System.exit(0);
-
+        outputDMPartitionMap(partitions);
 
         long totalOutSize = 0;
         for(PlistPartition p : partitions) {
@@ -531,6 +506,46 @@ public class DMGExtractor {
             dmgRaf.close();
             ui.displayMessage("Done!");
         }
+    }
+
+    /**
+     * Output a description of the partition map, valid for device mapper, expressed as a shell script.
+     * @param partitions
+     */
+    private static void outputDMPartitionMap(PlistPartition[] partitions) {
+        //XXX temporary. I am interested in extracting this information, but this should be a separate functionality.
+        for (PlistPartition p : partitions) {
+            System.out.println(p);
+        }
+        List<UDIFBlock> blocks2 = new ArrayList<UDIFBlock>();
+        for (int i = 0; i < partitions.length; i++) {
+            PlistPartition p = partitions[i];
+            System.out.printf(
+                    "dmsetup create wdc%d -r --addnodeoncreate <<EOF\n",
+                    i);
+
+            for (UDIFBlock b : p.getBlocks()) {
+                switch (b.getBlockType()) {
+                case UDIFBlock.BT_COPY:
+                case UDIFBlock.BT_ZERO:
+                    System.out.printf("%s\n", b.toCommands());
+                    blocks2.add(b);
+                    break;
+                case UDIFBlock.BT_END:
+                    //Do nothing
+                    break;
+                default:
+                    System.out.printf("Warning: skipping block of type %s with data %s\n", b.getBlockTypeAsString(), b.toString());
+                }
+            }
+            System.out.printf(
+                    "EOF\n\n");
+        }
+        assertSortedOnOutOffset(blocks2);
+        for (int i = 0; i < blocks2.size(); i++) {
+            UDIFBlock b = blocks2.get(i);
+        }
+        System.exit(0);
     }
 
     private static void assertSortedOnOutOffset(List<UDIFBlock> blocks) {
