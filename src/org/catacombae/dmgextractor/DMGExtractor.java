@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.io.RandomAccessFile;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Iterator;
 import java.util.Collections;
@@ -226,6 +227,11 @@ public class DMGExtractor {
 
         Plist plist = new Plist(buffer, ses.useSaxParser);
         PlistPartition[] partitions = plist.getPartitions();
+
+        //XXX temporary. I am interested in extracting this information, but this should be a separate functionality.
+        for (PlistPartition p : partitions) {
+            System.out.println(p);
+        }
 
         long totalOutSize = 0;
         for(PlistPartition p : partitions) {

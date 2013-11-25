@@ -20,6 +20,7 @@ package org.catacombae.dmg.udif;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -174,6 +175,16 @@ public class PlistPartition {
         throw new RuntimeException("No BT_END block found!");
     }
         
+    @Override
+    public String toString() {
+        return "PlistPartition [name=" + name + ", id=" + id + ", attributes="
+                + attributes + ", blockList=" + Arrays.toString(blockList)
+                + ", partitionSize=" + partitionSize + ", previousOutOffset="
+                + previousOutOffset + ", previousInOffset=" + previousInOffset
+                + ", finalOutOffset=" + finalOutOffset + ", finalInOffset="
+                + finalInOffset + "]";
+    }
+
     public static long calculatePartitionSize(UDIFBlock[] data) throws IOException {
         long partitionSize = 0;
 
